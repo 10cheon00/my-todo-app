@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Date extends StatelessWidget {
-  final String date; // 날짜 입력값 (YYYY-MM-DD 형태)
+class DateWidget extends StatelessWidget {
+  final DateTime date; // 날짜 입력값 (YYYY-MM-DD 형태)
 
-  const Date({super.key, required this.date});
+  const DateWidget({super.key, required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class Date extends StatelessWidget {
       children: [
         // 연도 표시 (YYYY)
         Text(
-          date.split('-')[0], // YYYY 추출
+          date.year.toString(), // YYYY 추출
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -24,7 +24,7 @@ class Date extends StatelessWidget {
         SizedBox(height: 4), // 연도와 월/일 간의 간격
         // 월/일 표시 (mm/dd)
         Text(
-          '${date.split('-')[1]}/${date.split('-')[2]}', // mm/dd 추출
+          '${date.month}/${date.day}', // mm/dd 추출
           style: TextStyle(
             fontSize: 32,
             color: Colors.black87,

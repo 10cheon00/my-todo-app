@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown_widget/markdown_widget.dart';
-import 'package:my_app/widgets/date.dart';
+import 'package:my_app/models/Note.dart';
+import 'package:my_app/widgets/DateWidget.dart';
 
 class DailyNote extends StatefulWidget {
-  final String date; // 연월일 (왼쪽 영역)
-  final String note; // 노트 내용 (가운데 영역)
+  final Note note; // 노트 내용 (가운데 영역)
   final VoidCallback onDelete; // 삭제 콜백
 
   DailyNote({
     super.key,
-    required this.date,
     required this.note,
     required this.onDelete,
   });
@@ -78,12 +77,12 @@ class DailyNote extends StatefulWidget {
 
 class NoteState extends State<DailyNote> {
   bool isEditing = false;
-  late String data;
+  late Note noteData;
 
   @override
   void initState() {
     super.initState();
-    data = widget.note;
+    noteData = widget.note;
   }
 
   @override
@@ -109,7 +108,7 @@ class NoteState extends State<DailyNote> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Date(date: widget.date),
+              DateWidget(date: widget.note.date),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: isEditing
@@ -139,7 +138,8 @@ class NoteState extends State<DailyNote> {
 
           isEditing
               ? Expanded(
-                  child: TextField(
+                  child: TextFormField(
+                  initialValue: noteData.content,
                   maxLines: null,
                   autofocus: true,
                   decoration: InputDecoration(
@@ -148,11 +148,11 @@ class NoteState extends State<DailyNote> {
                   ),
                   onChanged: (value) {
                     setState(() {
-                      data = value; // 수정된 내용을 저장
+                      noteData.content = value; // 수정된 내용을 저장
                     });
                   },
                 ))
-              : MarkdownBlock(data: data)
+              : MarkdownBlock(data: noteData.content)
         ],
       ),
     );

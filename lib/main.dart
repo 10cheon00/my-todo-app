@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/widgets/daily_note.dart';
+import 'package:my_app/models/Note.dart';
+import 'package:my_app/widgets/DailyNote.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,17 +19,19 @@ class MyApp extends StatelessWidget {
 
 
 class HomePage extends StatelessWidget {
-  final List<String> notes = [
-    '2025-01-02:\nComplete Flutterrr project\n- UI Design\n- Backend Integration\n- Testing and Deployment',
-    '2025-01-02:\nComplete Flutterrr project\n- UI Design\n- Backend Integration\n- Testing and Deployment',
-    '2025-01-03:\nRead a book\n- Chapter 1: Introduction\n- Chapter 2: Basics\n- Chapter 3: Advanced Topics',
-    ':smiley: 2025-01-04:\nPlan the weekend\n- Saturday: Hiking\n- Sunday: Relaxing and family time',
-    '- [x] asdfa\n- [ ] asdfaf\n# asdf \n ## asdf\n ### asdf **aasdf** *asdfads* - asdfasdf \n-asdfasdf\n [asdfasdf](http://www.google.com))',
-    '|asdf|asdf|\n|---|---|\n|asdf|asdfasdfasdf|'
+  final List<Note> notes = [
+    Note(DateTime(2019,12,31), "# h1\n # h2\n # h3\n"),
+    Note(DateTime(2020,1,1), "# h1\n # h2\n # h3\n"),
+    Note(DateTime(2020,1,2), "# h1\n # h2\n # h3\n"),
+    Note(DateTime(2020,1,3), "# h1\n # h2\n # h3\n"),
+    Note(DateTime(2020,1,4), "# h1\n # h2\n # h3\n"),
+    Note(DateTime(2020,1,5), "# h1\n # h2\n # h3\n"),
   ];
 
   @override
   Widget build(BuildContext context) {
+    notes.sort((a, b) => b.date.compareTo(a.date));
+
     return Scaffold(
       appBar: AppBar(
         title: Text('TODO Notes'),
@@ -37,10 +40,10 @@ class HomePage extends StatelessWidget {
         itemCount: notes.length,
         itemBuilder: (context, index) {
           return DailyNote(
-              date: "2022-11-13",
               note: notes[index],
               onDelete: () => {});
         },
+
       ),
     );
   }
