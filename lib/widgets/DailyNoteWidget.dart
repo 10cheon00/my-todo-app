@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:my_app/config/color.dart';
 import 'package:my_app/models/Note.dart';
 import 'package:my_app/widgets/DateWidget.dart';
 
 class DailyNoteWidget extends StatefulWidget {
+  final int id;
   final Note note; // 노트 내용 (가운데 영역)
   final Function onDelete; // 삭제 콜백
   final Function onUpdate; // 수정 콜백
 
   const DailyNoteWidget(
       {super.key,
+      required this.id,
       required this.note,
       required this.onUpdate,
       required this.onDelete});
@@ -37,7 +40,7 @@ class NoteState extends State<DailyNoteWidget> {
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: TodoAppColor.getGrayScaleColor(widget.id),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -92,9 +95,9 @@ class NoteState extends State<DailyNoteWidget> {
                   maxLines: null,
                   autofocus: true,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Edit Note',
-                  ),
+                      border: OutlineInputBorder(),
+                      labelText: 'Edit Note',
+                      fillColor: Colors.white),
                   onChanged: (value) {
                     widget.onUpdate(value);
                   },
@@ -109,5 +112,13 @@ class NoteState extends State<DailyNoteWidget> {
     setState(() {
       isEditing = !isEditing;
     });
+  }
+
+  keyToColorCode(int id) {
+    if (id == 0) {
+      return 50;
+    } else {
+      return id > 9 ? 900 : id * 100;
+    }
   }
 }

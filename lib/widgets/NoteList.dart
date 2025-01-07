@@ -30,6 +30,7 @@ class NoteListState extends State<NoteList> {
       itemBuilder: (context, index) {
         return DailyNoteWidget(
             key: ValueKey(notes[index].date),
+            id: index,
             note: notes[index],
             onUpdate: (content) => updateNoteContent(index, content),
             onDelete: () => deleteNote(index));
