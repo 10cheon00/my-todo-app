@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown_widget/markdown_widget.dart';
-import 'package:my_app/config/color.dart';
 import 'package:my_app/models/Note.dart';
 import 'package:my_app/widgets/DateWidget.dart';
 
-class DailyNoteWidget extends StatefulWidget {
+class NoteWidget extends StatefulWidget {
   final int id;
   final Note note; // 노트 내용 (가운데 영역)
   final Function onDelete; // 삭제 콜백
   final Function onUpdate; // 수정 콜백
 
-  const DailyNoteWidget(
+  const NoteWidget(
       {super.key,
       required this.id,
       required this.note,
@@ -24,7 +23,7 @@ class DailyNoteWidget extends StatefulWidget {
   }
 }
 
-class NoteState extends State<DailyNoteWidget> {
+class NoteState extends State<NoteWidget> {
   late Note note;
   bool isEditing = false;
 
@@ -37,18 +36,17 @@ class NoteState extends State<DailyNoteWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: TodoAppColor.getGrayScaleColor(widget.id),
+        color: transparentColor(Colors.white, widget.id),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            blurRadius: 4,
-            offset: Offset(2, 2),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.shade300,
+        //     blurRadius: 4,
+        //     offset: Offset(2, 2),
+        //   ),
+        // ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,11 +112,9 @@ class NoteState extends State<DailyNoteWidget> {
     });
   }
 
-  keyToColorCode(int id) {
-    if (id == 0) {
-      return 50;
-    } else {
-      return id > 9 ? 900 : id * 100;
-    }
+  Color transparentColor(Color color, int id) {
+    id = id == 0 ? 1 : id;
+    double alphaValue = 255 * (0.5 / id + 0.5);
+    return color.withAlpha(alphaValue.toInt());
   }
 }

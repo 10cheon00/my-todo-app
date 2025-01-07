@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/models/Note.dart';
-import 'package:my_app/widgets/DailyNoteWidget.dart';
 import 'package:my_app/widgets/NoteList.dart';
 
 void main() {
@@ -36,11 +35,16 @@ class HomePage extends StatelessWidget {
     ];
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('TODO Notes'),
-        ),
-        body: NoteList(notes: notes));
+      appBar: AppBar(
+        title: Text('TODO Notes'),
+      ),
+      backgroundColor: Colors.amber,
+      body: NoteList(notes: notes),
+    );
   }
-  
-  static const String text = "# h1 Heading 8-)\n## h2 Heading\n### h3 Heading\n#### h4 Heading\n##### h5 Heading\n###### h6 Heading\n---\n## Horizontal Rules";
+
+  static const String text =
+      "# h1 Heading 8-)\n## h2 Heading\n### h3 Heading\n#### h4 Heading\n##### h5 Heading\n###### h6 Heading\n---\n## Horizontal Rules";
+
+  void createNote() {}
 }
