@@ -72,13 +72,13 @@ class HomePage extends StatelessWidget {
     var response = await http.get(Uri.https(
         "yfi1ooqmm9.execute-api.ap-northeast-2.amazonaws.com", "todos"));
     List<dynamic> data = jsonDecode(response.body);
-    List<Note> notes = List.empty();
+    List<Note> notes = [];
     for (var element in data) {
       debugPrint(element["date"].toString());
       int epoch = element["date"];
       String content = element["content"];
 
-      // notes.add(Note(DateTime.fromMillisecondsSinceEpoch(epoch), content));
+      notes.add(Note(DateTime.fromMillisecondsSinceEpoch(epoch), content));
     }
     return notes;
   }
