@@ -26,11 +26,13 @@ class NoteWidget extends StatefulWidget {
 class NoteState extends State<NoteWidget> {
   late Note note;
   bool isEditing = false;
-
+  late String content;
+  
   @override
   void initState() {
     super.initState();
     note = widget.note;
+    content = widget.note.content;
   }
 
   @override
@@ -40,13 +42,6 @@ class NoteState extends State<NoteWidget> {
       decoration: BoxDecoration(
         color: transparentColor(Colors.white, widget.id),
         borderRadius: BorderRadius.circular(8),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey.shade300,
-        //     blurRadius: 4,
-        //     offset: Offset(2, 2),
-        //   ),
-        // ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,14 +58,14 @@ class NoteState extends State<NoteWidget> {
                   children: isEditing
                       ? [
                           IconButton(
-                            onPressed: edit,
+                            onPressed: saveNote,
                             icon: Icon(Icons.check, color: Colors.green),
                             tooltip: 'Done',
                           ),
                         ]
                       : [
                           IconButton(
-                            onPressed: edit,
+                            onPressed: openTextFormField,
                             icon: Icon(Icons.edit, color: Colors.green),
                             tooltip: 'Edit',
                           ),
@@ -97,7 +92,8 @@ class NoteState extends State<NoteWidget> {
                       labelText: 'Edit Note',
                       fillColor: Colors.white),
                   onChanged: (value) {
-                    widget.onUpdate(value);
+                    content = value;
+                    debugPrint(value);
                   },
                 ))
               : MarkdownBlock(data: note.content)
@@ -106,9 +102,21 @@ class NoteState extends State<NoteWidget> {
     );
   }
 
-  void edit() {
+  void saveNote() {
+    closeTextFormField();
+    widget.onUpdate(note, content);
+    debugPrint(content);
+  }
+
+  void openTextFormField() {
     setState(() {
-      isEditing = !isEditing;
+      isEditing = true;
+    });
+  }
+  
+  void closeTextFormField() {
+    setState(() {
+      isEditing = false;
     });
   }
 
@@ -117,4 +125,5 @@ class NoteState extends State<NoteWidget> {
     double alphaValue = 255 * (0.5 / id + 0.5);
     return color.withAlpha(alphaValue.toInt());
   }
+  
 }

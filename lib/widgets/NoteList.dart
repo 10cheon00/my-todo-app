@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:my_app/models/Note.dart';
 import 'package:my_app/widgets/NoteWidget.dart';
 
@@ -38,7 +42,7 @@ class NoteListState extends State<NoteList> {
                   key: ValueKey(notes[index].date),
                   id: notes.length - index,
                   note: notes[index],
-                  onUpdate: (content) => updateNoteContent(index, content),
+                  onUpdate: updateNoteContent,
                   onDelete: () => deleteNote(index));
             },
             separatorBuilder: (BuildContext context, int index) {
@@ -54,9 +58,21 @@ class NoteListState extends State<NoteList> {
     });
   }
 
-  void updateNoteContent(index, content) {
-    setState(() {
-      notes[index].content = content;
+  void updateNoteContent(note, content) {
+    http
+        .post(
+            Uri.https(
+                "yfi1ooqmm9.execute-api.ap-northeast-2.amazonaws.com", "todos"),
+            body: jsonEncode({
+              "date": note.date.toUtc().millisecondsSinceEpoch,
+              "content": content
+            }))
+        .then((response) {
+      var body = jsonDecode(response.body);
+      debugPrint(body["content"]);
+      setState(() {
+        note.content = body["content"];
+      });
     });
   }
 

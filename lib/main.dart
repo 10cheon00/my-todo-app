@@ -23,20 +23,6 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // final List<Note> notes = [
-    //   Note(DateTime(2019, 12, 31), "asdf"),
-    //   Note(DateTime(2020, 1, 1), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 2), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 3), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 4), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 5), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 6), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 7), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 8), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 9), "# h1\n ## h2\n ### h3\n"),
-    //   Note(DateTime(2020, 1, 10), text),
-    // ];
-
     return Scaffold(
         appBar: AppBar(
           title: Text('TODO Notes'),
@@ -71,20 +57,18 @@ class HomePage extends StatelessWidget {
   Future<List<Note>> getAllNote() async {
     var response = await http.get(Uri.https(
         "yfi1ooqmm9.execute-api.ap-northeast-2.amazonaws.com", "todos"));
-    debugPrint(response.body);
     List<dynamic> data = jsonDecode(response.body);
     List<Note> notes = [];
     for (var element in data) {
-      debugPrint(element["date"].toString());
-      debugPrint(element["content"]);
       int epoch = element["date"];
       String content = "${element["content"]}";
 
-      notes.add(Note(DateTime.fromMillisecondsSinceEpoch(epoch), convertLineBreak(content)));
+      notes.add(Note(DateTime.fromMillisecondsSinceEpoch(epoch),
+          convertLineBreak(content)));
     }
     return notes;
   }
-  
+
   String convertLineBreak(String content) {
     return content.replaceAll(r"\n", " \n");
   }
