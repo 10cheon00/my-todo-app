@@ -71,15 +71,21 @@ class HomePage extends StatelessWidget {
   Future<List<Note>> getAllNote() async {
     var response = await http.get(Uri.https(
         "yfi1ooqmm9.execute-api.ap-northeast-2.amazonaws.com", "todos"));
+    debugPrint(response.body);
     List<dynamic> data = jsonDecode(response.body);
     List<Note> notes = [];
     for (var element in data) {
       debugPrint(element["date"].toString());
+      debugPrint(element["content"]);
       int epoch = element["date"];
-      String content = element["content"];
+      String content = "${element["content"]}";
 
-      notes.add(Note(DateTime.fromMillisecondsSinceEpoch(epoch), content));
+      notes.add(Note(DateTime.fromMillisecondsSinceEpoch(epoch), convertLineBreak(content)));
     }
     return notes;
+  }
+  
+  String convertLineBreak(String content) {
+    return content.replaceAll(r"\n", " \n");
   }
 }
